@@ -2,13 +2,46 @@
 Next.js utworzony za pomocą `create-react-app` ma już wbudowanego ESlinta, jednak tę konfigurację można dodatkowo rozbudować. Aktualnie Next.js używa ESlinta w wersji 8. Wersja 9 będzie wymagała zupełnie innej kongifguracji.
 
 ## 1. Instalacja `typescript-eslint`
+`typescript-eslint` umożliwia ESlint'owi parsowanie składni TypeScript'a oraz umożliwia działanie zasad specyficznych dla TypeScript'a.
 
 Możesz podążać za oficjalnym [poradnikiem](https://typescript-eslint.io/getting-started/legacy-eslint-setup), jeśli wolisz.
 
-TODO: uzupełnić tę sekcję
+Najpierw zainstaluj parser i plugin.
+```powershell
+npm install --save-dev @typescript-eslint/parser @typescript-eslint/eslint-plugin 
+```
+Następnie uzupełnij plik `eslintrc.json`
+```js
+{
+  "root": true, //indicate this file is the root-level one used by the project and ESLint should not search beyond this directory for config files, generally good practice
+  "parser": "@typescript-eslint/parser", //set custom parser to parse typescript code 
+  "extends": [
+    "next/core-web-vitals", //basic next js rules
+    "eslint:recommended", //eslint recommended ruleset
+    "plugin:@typescript-eslint/recommended" //typescript-eslint recommended ruleset
+  ],
+  "plugins": [
+    "@typescript-eslint"
+  ]
+}
+```
 
 ## 2. Pluginy `react` i `react-hooks`
+Pluginy [`eslint-plugin-react`](https://github.com/jsx-eslint/eslint-plugin-react) i [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks) zawierają zasady specyficzne dla reacta.
 
+Instalacja:
+```powershell
+npm install eslint-plugin-react eslint-plugin-react-hooks --save-dev
+```
+
+Do `eslintrc.json` należy dopisać:
+```js
+"extends": [
+    // (...)
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+],
+```
 TODO: uzupełnić tę sekcję
 
 ## 3. Instalacja `prettier` jako pluginu ESlinta
