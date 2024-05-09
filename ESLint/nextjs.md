@@ -56,12 +56,30 @@ npm install --save-dev --save-exact prettier
 
 ```js
 {
-    "extends": [
-        "next/core-web-vitals",
-        "plugin:prettier/recommended" // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
-    ],
+  "extends": [
+    // (...)
+    "plugin:prettier/recommended" // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+  ],
 }
 ```
+Utwórz plik `.prettierrc.json` określający formatowanie kodu. Przykład:
+```js
+{
+  "arrowParens": "avoid",
+  "trailingComma": "all",
+  "singleQuote": true,
+  "printWidth": 80,
+  "endOfLine": "auto",
+  "bracketSameLine": true,
+  "tabWidth": 2
+}
+```
+
+Szczególnie ważna jest zasada
+```
+"endOfLine": "auto"
+```
+Ułatwia współpracę pomiędzy użytkownikami windowsa i maca.
 
 ## 4. Konfiguracja zasad
 
