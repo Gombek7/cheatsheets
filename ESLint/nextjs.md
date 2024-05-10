@@ -1,7 +1,47 @@
 # Konfiguracja ESlinta dla Next.js.
 Next.js utworzony za pomocą `create-react-app` ma już wbudowanego ESlinta, jednak tę konfigurację można dodatkowo rozbudować. Aktualnie Next.js używa ESlinta w wersji 8. Wersja 9 będzie wymagała zupełnie innej kongifguracji.
 
-## 1. Instalacja `typescript-eslint`
+## 1. Konfiguraca `vscode`
+**Wyłącz** pluginy [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode), (Prettier ESLint)[https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint] i tym podobne. Włącz tylko plugin [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
+
+Włącz traktowanie ESLinta jako formatera. W ustawieniach zaznacz `Eslint:Format`. Alternatywnie w `settings.json` dodaj wpis `"eslint.format.enable": true`.
+
+Włącz uruchamianie ESlinta przy zapisie. W `settings.json` dodaj wpis:
+```
+"editor.codeActionsOnSave": {
+  "source.fixAll.eslint": "explicit"
+},
+```
+
+**Wyłącz** ustawienie "Editor:Format on Save", aby nie uruchamiało się podwójne formatowanie.
+
+Ustawienia VSCode warto przypisać do workspace, dzięki czemu inni deweloperzy będą mieli te same ustawienia. Plik `.vscode/settings.json` możę wyglądać tak:
+```js
+{
+    //Fixes eslint error "Pages directory cannot be found..."
+    "eslint.workingDirectories": [
+        {
+            "pattern": "./packages/*/"
+        }
+    ],
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit"
+    },
+    "eslint.format.enable": true,
+    "editor.formatOnSave": false
+}
+```
+
+W pliku `.vscode/extension.json` można ustawić rekomendowane rozszerzenia.
+```js
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint"
+  ]
+}
+```
+
+## 2. Instalacja `typescript-eslint`
 `typescript-eslint` umożliwia ESlint'owi parsowanie składni TypeScript'a oraz umożliwia działanie zasad specyficznych dla TypeScript'a.
 
 Możesz podążać za oficjalnym [poradnikiem](https://typescript-eslint.io/getting-started/legacy-eslint-setup), jeśli wolisz.
@@ -26,7 +66,7 @@ Następnie uzupełnij plik `eslintrc.json`
 }
 ```
 
-## 2. Pluginy `react` i `react-hooks`
+## 3. Pluginy `react` i `react-hooks`
 Pluginy [`eslint-plugin-react`](https://github.com/jsx-eslint/eslint-plugin-react) i [`eslint-plugin-react-hooks`](https://www.npmjs.com/package/eslint-plugin-react-hooks) zawierają zasady specyficzne dla reacta.
 
 Instalacja:
@@ -44,7 +84,7 @@ Do `eslintrc.json` należy dopisać:
 ```
 TODO: uzupełnić tę sekcję
 
-## 3. Instalacja `prettier` jako pluginu ESlinta
+## 4. Instalacja `prettier` jako pluginu ESlinta
 [`Prettier`](https://github.com/prettier/prettier) może zostać skonfigurowany jako [plugin do ESlinta](https://github.com/prettier/eslint-plugin-prettier). Błędy formatowania będą zgłaszane jako samonaprawialne błędy ESlinta.
 
 Najpierw zainstalujmy potrzebne paczki:
@@ -81,17 +121,109 @@ Szczególnie ważna jest zasada
 ```
 Ułatwia współpracę pomiędzy użytkownikami windowsa i maca.
 
-## 4. Konfiguracja zasad
+## 5. Konfiguracja zasad
 
-TODO: uzupełnić tę sekcję
+Poniżej znajduje się lsita zasad, które według mnie warto włączyć/wyłączyć:
 
-## 5. (Opcjonalnie) Sortowanie importów
+```js
+{
+  "rules": {
+    "react/react-in-jsx-scope": "off", // don't require import React (in Next.js it's not required)
+    "react/prop-types": "off", // allow missing props validation (in Typescript it's unnecessary)
+    "react/display-name": "off", // allow missing displayName in a React component definition
+    "@next/next/no-img-element": "off", // allow using native <img> element in Next.js
+    "@typescript-eslint/no-unused-vars": [ // allow unused vars when dev intentionally mark them with `-`
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "no-restricted-imports": [ // if you use `next-i18next` lib, don't import from `react-i18next`
+      "error",
+      {
+        "name": "react-i18next",
+        "message": "Please use 'next-i18next' instead."
+      }
+    ],
+    "react-hooks/exhaustive-deps": [ // check dependencies in react hooks, also in custom hook `useEffectUpdate`
+      "warn",
+      {
+        "additionalHooks": "(useEffectUpdate)"
+      }
+    ],
+    "react-hooks/rules-of-hooks": "error" // check if hoooks are used correctly
+  },
+}
+```
+
+## 6. (Opcjonalnie) Sortowanie importów
 
 Istnieje kilka pluginów sortujących importy. Całkiem nieźle sprawdza się (`eslint-plugin-simple-import-sort`)[https://www.npmjs.com/package/eslint-plugin-simple-import-sort]
 
-TODO: uzupełnić tę sekcję
+```
+npm i eslint-plugin-simple-import-sort --save-dev
+```
 
-## 6. Konfiguracja dla monorepo
+Można zmienić domyślne działanie pluginu za pomocą zasad w `eslintrc.json`
+
+```js
+{
+  "rules": {
+    //(...)
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          [
+            "^react",
+            "^@deliverky/",
+            "^@aexol-studio/",
+            // Side effect imports.
+            "^\\u0000",
+            // Node.js builtins prefixed with `node:`.
+            "^node:",
+            // Packages.
+            // Things that start with a letter (or digit or underscore), or `@` followed by a letter.
+            "^@?\\w",
+            // Absolute imports and other imports such as Vue-style `@/foo`.
+            // Anything not matched in another group.
+            "^",
+            // Relative imports.
+            // Anything that starts with a dot.
+            "^\\."
+          ]
+        ]
+      }
+    ],
+    "simple-import-sort/exports": "error"
+  }
+}
+```
+
+## 7. Konfiguracja dla monorepo
+
+W poszczególnych paczkach dodaj pliki konfiguracyjne `eslint.json` rozszerzające główne ustawienia. Jeśli next nie jest używany we wsystkich paczkach, to możesz przenieść jego ustawienia do poszczególnych paczek.
+```
+{
+  "extends": [
+    "next/core-web-vitals",
+    "../../.eslintrc.json"
+  ]
+}
+```
+W pliku `.vscode/settings` dodaj ponizszy wpis, aby eslint prawidłowo rozpoznał foldery `pages`.
+```
+{
+  //Fixes eslint error "Pages directory cannot be found..."
+  "eslint.workingDirectories": [
+    {
+      "pattern": "./packages/*/"
+    }
+  ],
+}
+```
 
 ## Częste pytania i problemy
 
