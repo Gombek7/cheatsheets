@@ -2,7 +2,7 @@
 Next.js utworzony za pomocą `create-react-app` ma już wbudowanego ESlinta, jednak tę konfigurację można dodatkowo rozbudować. Aktualnie Next.js używa ESlinta w wersji 8. Wersja 9 będzie wymagała zupełnie innej kongifguracji.
 
 ## 1. Konfiguraca `vscode`
-**Wyłącz** pluginy [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode), (Prettier ESLint)[https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint] i tym podobne. Włącz tylko plugin [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
+**Wyłącz** pluginy [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode), [Prettier ESLint](https://marketplace.visualstudio.com/items?itemName=rvest.vs-code-prettier-eslint) i tym podobne. Włącz tylko plugin [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint).
 
 Włącz traktowanie ESLinta jako formatera. W ustawieniach zaznacz `Eslint:Format`. Alternatywnie w `settings.json` dodaj wpis `"eslint.format.enable": true`.
 
