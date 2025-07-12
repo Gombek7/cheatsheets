@@ -1,0 +1,8 @@
+{
+  "recommendations": ["dbaeumer.vscode-eslint", "bradlc.vscode-tailwindcss"],
+  "unwantedRecommendations": [
+    "rvest.vs-code-prettier-eslint",
+    "exceptionptr.vscode-prettier-eslint",
+    "esbenp.prettier-vscode"
+  ]
+}

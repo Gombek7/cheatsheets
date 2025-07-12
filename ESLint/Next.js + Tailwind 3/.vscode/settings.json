@@ -1,0 +1,48 @@
+{
+  "eslint.format.enable": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "always"
+  },
+  "prettier.enable": false,
+  "eslint.validate": ["css", "scss", "json", "jsonc", "json5"],
+  "[css]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[scss]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[json]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[jsonc]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[json5]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "classNames",
+    ".*ClassName*", // turn on tailwind autocompletion for props like wrapperClassName, containerClassName, viewportClassName e.t.c.
+    "ngClass",
+    "class:list"
+  ],
+  "tailwindCSS.classFunctions": [
+    "tw",
+    "clsx",
+    "tw\\.[a-z-]+",
+    "cn" // used by shadcn
+  ]
+  // open css files as Tailwind CSS
+  // it doesn't work with @eslint/css
+  // "files.associations": {
+  //   "*.css": "tailwindcss"
+  // }
+}
